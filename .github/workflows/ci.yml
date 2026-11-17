@@ -36,11 +36,16 @@ jobs:
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
+      - name: Debug - Print variables
+        run: |
+          echo "AWS_ROLE_ARN=${{ vars.AWS_ROLE_ARN }}"
+          echo "AWS_REGION=${{ vars.AWS_REGION }}"
+          echo "ECR_REPOSITORY=${{ vars.ECR_REPOSITORY }}"
       - name: Assume AWS role through OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: arn:aws:iam::355827191267:role/github-actions-ecr-push-role
+          aws-region: ap-south-1
       - name: Log in to ECR
         id: ecr
         uses: aws-actions/amazon-ecr-login@v2
